@@ -34,9 +34,14 @@ data class TransApi(
     @Serializable
     data class ResultData(
         val error_code: Int = 52000,
-        val trans_result: List<TransResult> = listOf()
+        val from: String = "",
+        val to: String = "",
+        private val trans_result: List<TransResult> = listOf()
     ) {
-        fun getMessage(): String {
+        fun getResult(): String {
+            return if (trans_result.isEmpty()) "" else trans_result[0].dst
+        }
+        fun getErrorMessage(): String {
             return when (error_code) {
                 52000 -> {
                     "成功"

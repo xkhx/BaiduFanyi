@@ -1,0 +1,5 @@
+name: BaiduFanyi
+author: D_xiaox
+version: "0.0.1"
+main: me.xiaox.baidufanyi.BaiduFanyi
+info: 百度翻译插件

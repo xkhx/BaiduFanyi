@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,6 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.4-M1</kotlin.version>
+        <serialization.version>0.20.0</serialization.version>
         <kotlin.code.style>official</kotlin.code.style>
         <junit.version>4.12</junit.version>
     </properties>
@@ -67,6 +69,11 @@
             <artifactId>mirai-console</artifactId>
             <version>0.4.11</version> <!-- 替换版本为最新版本 -->
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-serialization-runtime</artifactId>
+            <version>${serialization.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,10 +102,18 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <jvmTarget>1.8</jvmTarget>
                     <compilerPlugins>
                         <plugin>kotlinx-serialization</plugin>
                     </compilerPlugins>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-serialization</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
