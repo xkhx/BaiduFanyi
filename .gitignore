@@ -1,2 +1,4 @@
 /BaiduFanyi.iml
 /.idea/
+/src/test/kotlin/me/xiaox/baidufanyi/TTest.kt
+/target/
