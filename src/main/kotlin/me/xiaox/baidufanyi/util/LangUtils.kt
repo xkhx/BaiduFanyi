@@ -11,6 +11,10 @@ object LangUtils {
         "swe" to "瑞典语", "hu" to "匈牙利语", "cht" to "繁体中文", "vie" to "越南语"
     )
 
+    fun isExist(text: String): Boolean {
+        return lang.contains(text)
+    }
+
     /**
      * 根据简写获取中文名称
      */

@@ -20,42 +20,54 @@ object BaiduFanyi : PluginBase() {
                 val args = command.drop(1)
                 when (root) {
                     "fanyi" -> {
-                        if (args.isNotEmpty()) {
-                            if (args.size >= 2) {
-                                val data = api.getTransResult(
-                                    args[1], "auto", args[0]
-                                )
-                                if (data.error_code != 52000) {
-                                    reply("[翻译] ${data.getErrorMessage()}")
-                                    return@startsWith
-                                }
-                                val from = LangUtils.getSimple2Chinese(data.from)
-                                val to = LangUtils.getSimple2Chinese(data.to)
-                                reply("[翻译] $from → $to\n${data.getResult()}")
-                                return@startsWith
-                            }
-                        }
-                        reply("[翻译] 正确的参数 #fanyi [语言] [要翻译的内容]")
-                        return@startsWith
-                    }
-                    "翻译查询" -> {
                         if (args.isEmpty()) {
-                            reply("[翻译查询] 命令列表\n" +
-                                    "#翻译查询 取简写 [目标语言] - 获取目标语言的简写\n" +
-                                    "#翻译查询 取中文 [目标语言] - 获取目标语言的中文\n")
+                            reply(
+                                "[翻译] 命令列表\n" +
+                                        "#fanyi [目标语言] [要翻译的内容]\n" +
+                                        "#fanyi [当前语言] [目标语言] [要翻译的内容]\n" +
+                                        "#fanyi query [key/value] [{key}/{value}] - 根据键/值获取键(获取语言简写/语言中文)"
+                            )
                             return@startsWith
                         }
+                        if (args[0].toLowerCase() == "query") {
+                            if (args.size >= 3) {
+                                if (args[1] == "key") {
+                                    val simple = LangUtils.getChinese2Simple(args[2])
+                                    reply("[翻译] 目标简写: $simple")
+                                    return@startsWith
+                                }
+                                if (args[1] == "value") {
+                                    val chinese = LangUtils.getSimple2Chinese(args[2])
+                                    reply("[翻译] 目标中文: $chinese")
+                                    return@startsWith
+                                }
+                                reply("[翻译] 正确的参数 #fanyi query [key/value] [{key}/{value}]")
+                                return@startsWith
+                            }
+                            reply("[翻译] 正确的参数 #fanyi query [key/value] [{key}/{value}]")
+                            return@startsWith
+                        }
+
                         if (args.size >= 2) {
-                            if (args[0] == "取简写") {
-                                val simple = LangUtils.getChinese2Simple(args[1])
-                                reply("[翻译查询] 目标简写: $simple")
+                            val data = if (LangUtils.isExist(args[1]) && args.size > 2) {
+                                val query = args.drop(2).joinToString(" ")
+                                api.getTransResult(
+                                    query, args[0], args[1]
+                                )
+                            } else {
+                                val query = args.drop(1).joinToString(" ")
+                                api.getTransResult(
+                                    query, "auto", args[0]
+                                )
+                            }
+                            if (data.error_code != 52000) {
+                                reply("[翻译] ${data.getErrorMessage()}")
                                 return@startsWith
                             }
-                            if (args[0] == "取简写") {
-                                val chinese = LangUtils.getSimple2Chinese(args[1])
-                                reply("[翻译查询] 目标中文: $chinese")
-                                return@startsWith
-                            }
+                            val from = LangUtils.getSimple2Chinese(data.from)
+                            val to = LangUtils.getSimple2Chinese(data.to)
+                            reply("[翻译] $from → $to\n${data.getResult()}")
+                            return@startsWith
                         }
                     }
                 }
