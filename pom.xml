@@ -16,7 +16,7 @@
         <kotlin.version>1.4-M1</kotlin.version>
         <serialization.version>0.20.0</serialization.version>
         <kotlin.code.style>official</kotlin.code.style>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
     </properties>
 
     <repositories>
